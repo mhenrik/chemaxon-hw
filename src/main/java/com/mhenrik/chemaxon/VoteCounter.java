@@ -1,8 +1,9 @@
 package com.mhenrik.chemaxon;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class VoteCounter {
 
@@ -12,20 +13,17 @@ public class VoteCounter {
     public static HashMap<String, Integer> vote(List<String> voteList) {
 
         String voter = voteList.get(0);
-        List<String> votesByVoter = new ArrayList<>();
 
-        for (int i = 1; i < voteList.size() ; i++) {
-
-            votesByVoter.add(voteList.get(i));
-        }
+        List<String> votesByVoter = IntStream.range(1, voteList.size())
+                .filter(i -> !voteList.get(i).equals(voter))
+                .mapToObj(voteList::get)
+                .collect(Collectors.toList());
 
         votes.put(voter, votesByVoter);
 
-        for (String vote : votes.get(voter)) {
+        votes.get(voter).forEach(
+                vote -> result.merge(vote, 1, Integer::sum));
 
-            result.merge(vote, 1, Integer::sum);
-
-        }
         return result;
 
     }

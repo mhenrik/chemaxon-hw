@@ -9,9 +9,7 @@ import java.util.Map;
 
 public class FileProcessor {
 
-    Map<String, Integer> result = new HashMap<>();
-
-    public void read(String path) throws IOException {
+    public Map<String, Integer> read(String path) throws IOException {
 
         Map<String, Integer> result = new HashMap<>();
         InputStreamReader in = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(path));
@@ -29,14 +27,22 @@ public class FileProcessor {
         }
 
         result.forEach(
-                (key, value) -> System.out.println(key + ": " + value )
-        );
+                (key, value) -> System.out.println(key + ": " + value ));
 
+        return result;
+
+    }
+
+    public static String findMostPopularChild(Map<String, Integer> result) {
+
+        return result.entrySet().stream()
+                .max((vote1, vote2) -> vote1.getValue() > vote2.getValue() ? 1 : -1).get().getKey();
     }
 
     public static void main(String[] args) throws IOException {
 
         FileProcessor fileProcessor = new FileProcessor();
-        fileProcessor.read("Gizineni.txt");
+        System.out.println(findMostPopularChild(fileProcessor.read("Gizineni.txt")));
+
     }
 }
