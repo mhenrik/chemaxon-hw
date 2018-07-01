@@ -13,21 +13,24 @@ public class FileProcessor {
 
     public void read(String path) throws IOException {
 
+        Map<String, Integer> result = new HashMap<>();
         InputStreamReader in = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(path));
         String line = "";
-        String split = " ";
+        String splitter = " ";
 
         try (BufferedReader bufferedReader = new BufferedReader(in)) {
 
             while ((line = bufferedReader.readLine()) != null) {
 
-                String[] preference = line.split(split);
+                String[] preference = line.split(splitter);
+                result = VoteCounter.vote(Arrays.asList(preference));
 
-
-
-                System.out.println(Arrays.toString(preference));
             }
         }
+
+        result.forEach(
+                (key, value) -> System.out.println(key + ": " + value )
+        );
 
     }
 
