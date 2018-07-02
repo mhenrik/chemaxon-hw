@@ -3,17 +3,22 @@ package com.mhenrik.chemaxon;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class FileProcessor {
 
-    public Map<String, Integer> read(String path) throws IOException {
+    private String path;
+
+    public FileProcessor(String path) {
+        this.path = path;
+    }
+
+    public Map<String, Integer> process() throws IOException {
 
         Map<String, Integer> result = new HashMap<>();
         InputStreamReader in = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(path));
-        String line = "";
+        String line;
         String splitter = " ";
 
         try (BufferedReader bufferedReader = new BufferedReader(in)) {
@@ -26,23 +31,18 @@ public class FileProcessor {
             }
         }
 
-        result.forEach(
-                (key, value) -> System.out.println(key + ": " + value ));
-
         return result;
 
     }
 
-    public static String findMostPopularChild(Map<String, Integer> result) {
+    public static List<String> findMostPopularChild(Map<String, Integer> result) {
+
+        long max = result.values().stream()
+                .max(Comparator.naturalOrder()).get();
 
         return result.entrySet().stream()
-                .max((vote1, vote2) -> vote1.getValue() > vote2.getValue() ? 1 : -1).get().getKey();
-    }
-
-    public static void main(String[] args) throws IOException {
-
-        FileProcessor fileProcessor = new FileProcessor();
-        System.out.println(findMostPopularChild(fileProcessor.read("Gizineni.txt")));
-
+                .filter(vote -> vote.getValue() == max)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 }
