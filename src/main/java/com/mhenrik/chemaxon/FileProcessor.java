@@ -11,10 +11,12 @@ import java.util.*;
 public class FileProcessor {
 
     private String path;
+    private VoteCounter voteCounter;
 
-    public FileProcessor(String path) {
+    public FileProcessor(String path, VoteCounter voteCounter) {
         checkNotNullOrEmpty(path);
         this.path = path;
+        this.voteCounter = voteCounter;
     }
 
     public Map<String, Integer> process() throws IOException, EmptyFileException {
@@ -42,7 +44,7 @@ public class FileProcessor {
             while ((line = bufferedReader.readLine()) != null) {
 
                 String[] preference = line.split(splitter);
-                result = VoteCounter.vote(Arrays.asList(preference));
+                result = voteCounter.vote(Arrays.asList(preference));
             }
         }
 

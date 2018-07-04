@@ -7,10 +7,10 @@ import java.util.stream.IntStream;
 
 public class VoteCounter {
 
-    private static HashMap<String, List<String>> votes = new HashMap<>();
-    private static HashMap<String, Integer> result = new HashMap<>();
+    private HashMap<String, List<String>> votes = new HashMap<>();
+    private HashMap<String, Integer> result = new HashMap<>();
 
-    public static HashMap<String, Integer> vote(List<String> voteList) {
+    public HashMap<String, Integer> vote(List<String> voteList) {
 
         String voter = voteList.get(0);
 

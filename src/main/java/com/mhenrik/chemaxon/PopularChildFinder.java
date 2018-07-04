@@ -13,7 +13,8 @@ public class PopularChildFinder {
     public static void main(String[] args) throws IOException, EmptyFileException {
 
         String path = "Gizineni.txt";
-        FileProcessor fileProcessor = new FileProcessor(path);
+        VoteCounter voteCounter = new VoteCounter();
+        FileProcessor fileProcessor = new FileProcessor(path, voteCounter);
 
         Map<String, Integer> result = fileProcessor.process();
 
