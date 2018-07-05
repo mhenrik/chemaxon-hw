@@ -19,15 +19,26 @@ public class FileProcessor {
         this.voteCounter = voteCounter;
     }
 
-    public Map<String, Integer> process() throws IOException, EmptyFileException {
+    public Map<String, Integer> process () throws IOException, EmptyFileException {
 
         Map<String, Integer> result = new HashMap<>();
+
+        for (List<String> line : readFile()) {
+            result = voteCounter.vote(line);
+        }
+
+        return result;
+    }
+
+    private List<List<String>> readFile() throws IOException, EmptyFileException {
+
+        List<List<String>> lines = new ArrayList<>();
 
         InputStream is = this.getClass().getClassLoader().getResourceAsStream(path);
         InputStreamReader in;
 
         if (is != null) {
-           in = new InputStreamReader(is);
+            in = new InputStreamReader(is);
         } else {
             throw new IllegalArgumentException("Incorrect file path!");
         }
@@ -44,11 +55,10 @@ public class FileProcessor {
             while ((line = bufferedReader.readLine()) != null) {
 
                 String[] preference = line.split(splitter);
-                result = voteCounter.vote(Arrays.asList(preference));
+                lines.add(Arrays.asList(preference));
             }
         }
-
-        return result;
+        return lines;
     }
 
     private void checkNotNullOrEmpty(String toCheck) {

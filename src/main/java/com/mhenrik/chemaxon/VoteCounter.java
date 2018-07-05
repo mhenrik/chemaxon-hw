@@ -12,6 +12,9 @@ public class VoteCounter {
 
     public HashMap<String, Integer> vote(List<String> voteList) {
 
+        if (voteList == null || voteList.isEmpty()) {
+            throw new IllegalArgumentException("Vote list cannot be empty!");
+        }
         String voter = voteList.get(0);
 
         List<String> votesByVoter = IntStream.range(1, voteList.size())
